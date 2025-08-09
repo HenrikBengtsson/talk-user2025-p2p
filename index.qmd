@@ -100,7 +100,7 @@ _ggplot2 logo balloon wall: **Greg Swinehart** & **Hadley Wickham**_
 
 
 
-## future.p2p - it's easy!
+## Back to the Future: future.p2p - it's easy!
 
 <br/>
 
@@ -109,7 +109,18 @@ You: _Argh, this takes foreeeeever_
 ```r
 y <- lapply(many_samples, fit_model)
 ```
-<br>
+<div style="height: 0.5ex"></div>
+
+. . .
+
+You: _Better, but I wish I had a bigger computer _
+
+```r
+library(future.apply)
+plan(multisession, workers = 8)
+y <- future_lapply(many_samples, fit_model)
+```
+<div style="height: 0.5ex"></div>
 
 . . .
 
@@ -118,10 +129,8 @@ Alice: _Don't worry - just join our compute cluster_
 ```r
 library(future.apply)
 plan(future.p2p::cluster, cluster = "alice/friends")
-
 y <- future_lapply(many_samples, fit_model)
 ```
-<br>
 
 . . .
 
