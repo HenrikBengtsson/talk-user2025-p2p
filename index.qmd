@@ -4,7 +4,7 @@ format:
     slide-number: true
     logo: images/future-logo.png
     footer: <https://www.futureverse.org>
-    include-in-header: heading-meta.html
+    HIDE_include-in-header: heading-meta.html
     code-copy: true
     center-title-slide: false
     code-link: true
@@ -32,25 +32,104 @@ execute:
 
 <h1>Futureverse P2P:<br>Peer-to-Peer Parallelization in R</h1>
 
+<h2><em>- Share compute among friends across the world</em></h2>
+
 <hr/>
+<br/>
 
 ### Henrik Bengtsson
 
 #### University of California, San Francisco
-#### R Foundation
-#### R Consortium
+#### R Foundation, R Consortium
 
 {{< bi github >}} {{< bi mastodon >}} {{< bi bluesky >}} \@HenrikBengtsson<br>
 
-![](images/future-logo.png){.absolute top=325 left=1100 width="250"}
+![](images/future-logo.png){.absolute top=20 right=20 width="250"}
 
-<br/>
 <br/>
 
 #### useR! 2025, Durham, NC, USA (2025-08-10)
 
 
+
+## Ten-Year Anniversary (future 0.6.0 released June 2015)
+
+<center>
+![](images/future-logo-balloons.png){width="40%"}
+
+<small>
+_future logo: **Dan LaBar**_, 
+_ggplot2 logo balloon wall: **Greg Swinehart** & **Hadley Wickham**_
+</small>
+</center>
+
+
+## useR! 2016 at Stanford, CA, USA
+
+<center>
+<img src="images/useR2016-slide-01.png" style="width: 60%; border: 2px solid black; padding: 10px; box-shadow: 5px 10px gray;">
+</center>
+
+## useR! 2016 at Stanford, CA, USA
+
+<center>
+<img src="images/useR2016-slide-05.png" style="width: 60%; border: 2px solid black; padding: 10px; box-shadow: 5px 10px gray;">
+</center>
+
+
+## useR! 2016 at Stanford, CA, USA
+
+<center>
+<img src="images/useR2016-slide-07.png" style="width: 60%; border: 2px solid black; padding: 10px; box-shadow: 5px 10px gray;">
+</center>
+
+
+## useR! 2016 at Stanford, CA, USA
+
+<center>
+<img src="images/useR2016-slide-12.png" style="width: 60%; border: 2px solid black; padding: 10px; box-shadow: 5px 10px gray;">
+</center>
+
+
+## useR! 2016 at Stanford, CA, USA
+
+<center>
+<img src="images/useR2016-slide-27.png" style="width: 60%; border: 2px solid black; padding: 10px; box-shadow: 5px 10px gray;">
+</center>
+
+
+
+
+## future.p2p - it's easy!
+
+<br/>
+
+You: _Argh, this takes foreeeeever_
+
+```r
+y <- lapply(many_samples, fit_model)
+```
+<br>
+
+. . .
+
+Alice: _Don't worry - just join our compute cluster_
+
+```r
+library(future.apply)
+plan(future.p2p::cluster, cluster = "alice/friends")
+
+y <- future_lapply(many_samples, fit_model)
+```
+<br>
+
+. . .
+
+Questions?
+
+
 ## Futureverse - A Friendly, Unifying Parallelization Framework in R
+
 
 ![](images/future-logo.png){.absolute top=160 right=10 width=250}
 
@@ -373,8 +452,8 @@ plan(future.batchtools::batchtools_sge)       # on a SGE job scheduler
 
 ```{r}
 #| code-line-numbers: "1|1-3|1-7|1-9|1-11|"
-library(future.p2p)
-plan(pico_p2p, cluster = "alice/p2p")
+library(future)
+plan(future.p2p::cluster, cluster = "alice/p2p")
 
 x <- rnorm(100)
 a %<-% sum(x[ 1:50 ])
@@ -415,7 +494,7 @@ z <- foreach::foreach(.x = x) %dofuture% { slow(.x) }
 
 ```r
 {bob}$ R --quiet
-> future.p2p::pico_p2p_worker(cluster = "alice/p2p")
+> future.p2p::worker(cluster = "alice/p2p")
 ```
 
 . . .
@@ -423,7 +502,7 @@ z <- foreach::foreach(.x = x) %dofuture% { slow(.x) }
 or directly from the command line:
 
 ```r
-{bob}$ Rscript -e future.p2p::pico_p2p_worker --cluster=alice/p2p
+{bob}$ Rscript -e future.p2p::worker --cluster=alice/p2p
 ```
 
 . . .
@@ -432,10 +511,10 @@ or directly from the command line:
 To contribute multiple workers, just repeat the above, e.g. four workers
 
 ```r
-{bob}$ Rscript -e future.p2p::pico_p2p_worker --cluster=alice/p2p &
-{bob}$ Rscript -e future.p2p::pico_p2p_worker --cluster=alice/p2p &
-{bob}$ Rscript -e future.p2p::pico_p2p_worker --cluster=alice/p2p &
-{bob}$ Rscript -e future.p2p::pico_p2p_worker --cluster=alice/p2p &
+{bob}$ Rscript -e future.p2p::worker --cluster=alice/p2p &
+{bob}$ Rscript -e future.p2p::worker --cluster=alice/p2p &
+{bob}$ Rscript -e future.p2p::worker --cluster=alice/p2p &
+{bob}$ Rscript -e future.p2p::worker --cluster=alice/p2p &
 ```
 
 
@@ -444,7 +523,7 @@ To contribute multiple workers, just repeat the above, e.g. four workers
 
 ```r
 {alice}$ R --quiet
-> future.p2p::pico_p2p_cluster(cluster = "alice/p2p", users = c("bob", "carol"))
+> future.p2p::cluster(cluster = "alice/p2p", users = c("bob", "carol"))
 ```
 
 . . .
@@ -452,7 +531,7 @@ To contribute multiple workers, just repeat the above, e.g. four workers
 or directly from the command line:
 
 ```r
-{alice}$ Rscript -e future.p2p::pico_p2p_cluster --cluster=alice/p2p --users=bob,carol
+{alice}$ Rscript -e future.p2p::cluster --cluster=alice/p2p --users=bob,carol
 ```
 
 
@@ -507,4 +586,3 @@ or directly from the command line:
 * Share your pico username with your friends
 
 * Install `wormhole` (for P2P file sharing)
-
