@@ -318,11 +318,105 @@ Used to send futures to workers and receive results
 ::::
 
 
+## Alice hosts a P2P cluster
+
+Alice sets up P2P cluster and gives 'bob' and 'carol' access:
+
+```{r}
+#| code-line-numbers: false
+[alice]> future.p2p::cluster("alice/friends", users=c("bob", "carol"))
+```
+
+This is basically setting up a shared message board.
+
+. . .
+
+<br>
+Q. What happens if Bob tries to use the P2P cluster?
+
+```{r}
+#| code-line-numbers: false
+[bob]> library(future)
+[bob]> plan(future.p2p::cluster, cluster = "alice/friends")
+[bob]> y <- furrr::future_map(many_samples, fit_model)
+```
+
+. . .
+
+<br>
+
+### Nothing - it will get stuck! Why?
+
+
+## Contributing P2P workers is easy!
+
+```{r}
+#| code-line-numbers: false
+[alice]> future.p2p::worker("alice/friends")
+```
+<div style="height:1ex;"></div>
+```{r}
+#| code-line-numbers: false
+[ bob ]> future.p2p::worker("alice/friends")
+```
+<div style="height:1ex;"></div>
+```{r}
+#| code-line-numbers: false
+[carol]> future.p2p::worker("alice/friends")
+```
+
+. . .
+
+<br>
+
+```{r}
+#| code-line-numbers: false
+[bob]> library(future)
+[bob]> plan(future.p2p::cluster, cluster = "alice/friends")
+[bob]> y <- furrr::future_map(many_samples, fit_model)
+```
+
+<br>
+
+### => Processed on three P2P workers
+
+
+
+## Setup can be done from the terminal
+
+Setting up a P2P cluster:
+
+```{r}
+#| code-line-numbers: false
+{alice}$ Rscript -e future.p2p::cluster --cluster=alice/friends \
+         --users=bob,carol
+```
+
+. . .
+
+Starting P2P workers:
+
+```{r}
+#| code-line-numbers: false
+{alice}$ Rscript -e future.p2p::worker --cluster=alice/friends &
+{ bob }$ Rscript -e future.p2p::worker --cluster=alice/friends &
+{carol}$ Rscript -e future.p2p::worker --cluster=alice/friends &
+{carol}$ Rscript -e future.p2p::worker --cluster=alice/friends &
+{carol}$ Rscript -e future.p2p::worker --cluster=alice/friends &
+```
+
+. . .
+
+<br>
+
+### => A shared P2P cluster with 5 workers. More can be added at any time!
+
+
 ## Contributing your compute power is easy!
 
 ```r
 {bob}$ R --quiet
-> future.p2p::worker(cluster = "alice/p2p")
+> future.p2p::worker(cluster = "alice/friends")
 ```
 
 . . .
@@ -330,7 +424,7 @@ Used to send futures to workers and receive results
 or directly from the command line:
 
 ```r
-{bob}$ Rscript -e future.p2p::worker --cluster=alice/p2p
+{bob}$ Rscript -e future.p2p::worker --cluster=alice/friends
 ```
 
 . . .
@@ -339,58 +433,57 @@ or directly from the command line:
 To contribute multiple workers, just repeat the above, e.g. four workers
 
 ```r
-{bob}$ Rscript -e future.p2p::worker --cluster=alice/p2p &
-{bob}$ Rscript -e future.p2p::worker --cluster=alice/p2p &
-{bob}$ Rscript -e future.p2p::worker --cluster=alice/p2p &
-{bob}$ Rscript -e future.p2p::worker --cluster=alice/p2p &
+{bob}$ Rscript -e future.p2p::worker --cluster=alice/friends &
+{bob}$ Rscript -e future.p2p::worker --cluster=alice/friends &
+{bob}$ Rscript -e future.p2p::worker --cluster=alice/friends &
+{bob}$ Rscript -e future.p2p::worker --cluster=alice/friends &
 ```
 
 
 
-## Sharing a P2P cluster among friends
 
-```r
-{alice}$ R --quiet
-> future.p2p::cluster(cluster = "alice/p2p", users = c("bob", "carol"))
-```
+## {data-background-color=#D0F0FF}
 
-. . .
-
-or directly from the command line:
-
-```r
-{alice}$ Rscript -e future.p2p::cluster --cluster=alice/p2p --users=bob,carol
-```
+<center style="font-size: 400%; padding-top: 2.5ex;">
+Pros and cons
+</center>
 
 
-
-## Greater latency with distributed processing
+## High latency, high throughput with distributed processing
 
 * High latency:
 
-  - roundtrip takes time, because broadcasting, accept, and p2p file
-    transfers take time
+  - roundtrip takes time, because p2p file transfers take time
   
-  - Example: `1+2` takes 2-30 seconds to evaluate
+  - Example: `1+2` takes 2-30 seconds to send, evaluate, and recieve
 
 * High throughput:
 
-  - can evaluate 1000's of `1+2` statements concurrently
+  - can evaluate 1000's of R expressions concurrently
 
 
 
-## Trust
+## P2P computing requires mutual trust
 
-* Peer-to-peer compute requires mutual trust
+ * Running someone else's code is risky, e.g. `system("erase harddrive")`
+  
+ * Receiving results from someone else is less risky, but can we trust
+   the results?
 
-* Running someone else's code is risky, e.g. `system("format disk")`
+. . .
 
-* Receiving results from someone else is less risky, but do you trust
-  the results?
+Some technical mitigations:
 
-* Sandboxing, e.g. evaluate R code in a Linux container or a virtual
-  machine with no access to the internet, the file system, ...
+ * End-to-end encryption
 
+ * Run workers in sandboxed environments, e.g. process futures
+ 
+   - in a Linux container, or
+   - in a virtual machine
+   
+   without access to the internet, the file system, etc.
+
+### => I encourage work on these topics - it's challenging, but important
 
 
 ## Stay tuned for exiting announcements
