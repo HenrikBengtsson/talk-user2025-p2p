@@ -3,7 +3,7 @@ format:
   revealjs:
     slide-number: true
     logo: images/future-logo.png
-    footer: <https://www.futureverse.org>
+    footer: <https://future.p2p.futureverse.org>
     HIDE_include-in-header: heading-meta.html
     code-copy: true
     center-title-slide: false
@@ -462,6 +462,8 @@ Pros and cons
   
   - Example: `1+2` takes 2-10 seconds to send, evaluate, and return
 
+  - Just a prototype, so this will be improved
+
 * High throughput:
 
   - any number of users and workers can join
@@ -473,7 +475,7 @@ Pros and cons
 
 ## P2P computing requires mutual trust
 
- * Running someone else's code is risky, e.g. `system("erase harddrive")`
+ * Running someone else's code is risky, e.g. `f <- future(system("erase harddrive"))`
   
  * Receiving results from someone else is less risky, but can we trust
    the results?
@@ -533,7 +535,7 @@ The Future is bright<br>
 . . .
 
 
-## The future is bright!
+## Thank you and may the future be with you!
 
 * It’s easy to get started - just try it
 * Support: <https://github.com/HenrikBengtsson/future/discussions>
@@ -542,12 +544,4 @@ The Future is bright<br>
 * More features on the roadmap
 * I love feedback and ideas
 
-![](images/out.png){.absolute bottom=90 right=50 width="800"}
-
-
-
-## Appendix: Setup
-
-* You need a pico.sh account, just `ssh pico.sh` once
-
-* Share your pico username with your friends
+![](images/futurize-v1.png){.absolute bottom=70 right=50 width="600"}
