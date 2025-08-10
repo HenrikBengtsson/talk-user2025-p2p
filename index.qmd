@@ -178,6 +178,20 @@ ys <- map(xs, slow_sum)                       # {purrr}
 ys <- future_map(xs, slow_sum)                # {furrr}
 ```
 
+. . .
+
+<br>
+
+
+```{r}
+#| code-line-numbers: "1|2|3|4|5"
+plan(multisession)
+plan(future.callr::callr)
+plan(future.mirai::mirai_multisession)
+plan(cluster, workers = c("n1", "desktop", "server.myuniv.org"))
+plan(future.batchtools::batchtools_slurm)
+```
+
 
 
 ## {data-background-color=#D0F0FF}
@@ -237,44 +251,22 @@ _ggplot2 logo balloon wall: **Greg Swinehart** & **Hadley Wickham**_
 ## {data-background-color=#D0F0FF}
 
 <center style="font-size: 400%; padding-top: 3.5ex;">
-Back to the Future
+Back to the present
 </center>
-
-
-## Long running pipelines and parallelization
-
-<br/>
-
-You: _Argh, this takes foreeeeever_
-
-```r
-y <- lapply(many_samples, fit_model)
-```
-
-. . .
-
-You: _Better, but I wish I had a bigger computer _
-
-```r
-library(future.apply)
-plan(multisession, workers = 8)
-y <- future_lapply(many_samples, fit_model)
-```
-<div style="height: 0.5ex"></div>
 
 
 ## future.p2p: sharing compute among friends - it's easy!
 
 <div style="height: 0.5ex"></div>
 
-Alice: _Don't worry - just join our compute cluster_
-
 ::: {.column width="70%" font="150%"}
 ```{r}
 #| code-line-numbers: false
 library(future.apply)
+
 plan(future.p2p::cluster, cluster="alice/friends")
-y <- future_lapply(many_samples, fit_model)
+
+y <- future_lapply(xs, slow_sum)
 ```
 :::
 
@@ -292,6 +284,7 @@ How to get started ...
 ## A P2P cluster has two components
 
 :::: {.fragment}
+
 ::: {.column width="65%" font="100%"}
 <span style="font-size: 180%">Message Board</span>
 
@@ -299,12 +292,15 @@ Used to announce futures and offers to do work
 <br>
 (centralized; lightweight - only metadata)
 :::
+
 ::: {.column width="30%" font="100%"}
 ![](images/message_board.png){width="350"}
 :::
+
 ::::
 
 :::: {.fragment}
+
 ::: {.column width="65%" font="100%"}
 <span style="font-size: 180%">P2P file-transfer protocol</span>
 
@@ -312,10 +308,40 @@ Used to send futures to workers and receive results
 <br>
 (peer-to-peer; full-size data transfers)
 :::
+
 ::: {.column width="30%" font="100%"}
 ![](images/p2p-file-transfers.png){width="350"}
 :::
+
 ::::
+
+
+## To join a P2P cluster you need an account
+
+All P2P cluster users need an [pico.sh](https://pico.sh) account to
+access the message board:
+
+:::: {.columns}
+
+::: {.column width="50%" font-size="40%"}
+
+### 1. `ssh-keygen`
+
+![](images/ssh-keygen-carol.png){width="770"}
+
+:::
+
+::: {.column width="50%"}
+
+### 2. `ssh pico.sh` => pick a username
+
+![](images/pico.sh-signup-carol.png){width="770"}
+
+:::
+
+::::
+
+That's it!
 
 
 ## Alice hosts a P2P cluster
@@ -336,9 +362,8 @@ Q. What happens if Bob tries to use the P2P cluster?
 
 ```{r}
 #| code-line-numbers: false
-[bob]> library(future)
 [bob]> plan(future.p2p::cluster, cluster = "alice/friends")
-[bob]> y <- furrr::future_map(many_samples, fit_model)
+[bob]> y <- future_lapply(xs, slow_sum)
 ```
 
 . . .
@@ -371,9 +396,8 @@ Q. What happens if Bob tries to use the P2P cluster?
 
 ```{r}
 #| code-line-numbers: false
-[bob]> library(future)
 [bob]> plan(future.p2p::cluster, cluster = "alice/friends")
-[bob]> y <- furrr::future_map(many_samples, fit_model)
+[bob]> y <- future_lapply(xs, slow_sum)
 ```
 
 <br>
@@ -399,7 +423,16 @@ Starting P2P workers:
 ```{r}
 #| code-line-numbers: false
 {alice}$ Rscript -e future.p2p::worker --cluster=alice/friends &
+{alice}$ Rscript -e future.p2p::worker --cluster=alice/friends &
+```
+<span style="height:10px"/>
+```{r}
+#| code-line-numbers: false
 { bob }$ Rscript -e future.p2p::worker --cluster=alice/friends &
+```
+<span style="height:10px"/>
+```{r}
+#| code-line-numbers: false
 {carol}$ Rscript -e future.p2p::worker --cluster=alice/friends &
 {carol}$ Rscript -e future.p2p::worker --cluster=alice/friends &
 {carol}$ Rscript -e future.p2p::worker --cluster=alice/friends &
@@ -407,37 +440,9 @@ Starting P2P workers:
 
 . . .
 
-<br>
+<span style="height:10px"/>
 
-### => A shared P2P cluster with 5 workers. More can be added at any time!
-
-
-## Contributing your compute power is easy!
-
-```r
-{bob}$ R --quiet
-> future.p2p::worker(cluster = "alice/friends")
-```
-
-. . .
-
-or directly from the command line:
-
-```r
-{bob}$ Rscript -e future.p2p::worker --cluster=alice/friends
-```
-
-. . .
-
-
-To contribute multiple workers, just repeat the above, e.g. four workers
-
-```r
-{bob}$ Rscript -e future.p2p::worker --cluster=alice/friends &
-{bob}$ Rscript -e future.p2p::worker --cluster=alice/friends &
-{bob}$ Rscript -e future.p2p::worker --cluster=alice/friends &
-{bob}$ Rscript -e future.p2p::worker --cluster=alice/friends &
-```
+### => A shared P2P cluster with 6 workers. More can be added at any time!
 
 
 
@@ -449,17 +454,20 @@ Pros and cons
 </center>
 
 
-## High latency, high throughput with distributed processing
+## High latency but also high throughput
 
 * High latency:
 
   - roundtrip takes time, because p2p file transfers take time
   
-  - Example: `1+2` takes 2-30 seconds to send, evaluate, and recieve
+  - Example: `1+2` takes 2-10 seconds to send, evaluate, and return
 
 * High throughput:
 
-  - can evaluate 1000's of R expressions concurrently
+  - any number of users and workers can join
+  
+  - a public P2P cluster could have 1000's of P2P workers
+
 
 
 
@@ -481,42 +489,49 @@ Some technical mitigations:
    - in a Linux container, or
    - in a virtual machine
    
-   without access to the internet, the file system, etc.
+   See [**parallelly**](https://parallelly.futureverse.org/articles/parallelly-25-sandbox-workers.html) package for some examples
 
 ### => I encourage work on these topics - it's challenging, but important
 
 
-## Stay tuned for exiting announcements
 
-Near future:
+## {data-background-color=#D0F0FF}
+
+<center style="font-size: 400%; padding-top: 2.5ex;">
+The Future is bright<br>
+... and fabulous
+</center>
+
+
+## Stay tuned for exiting Futureverse improvements
+
+:::: {.fragments}
+
+### On the horizon {.fragment}
 
 ::: {.incremental}
 
  * Custom random number generators (RNG) [together with Ralf Stubner]
- * If you think **furrr** and **future.apply** are neat - just wait!
 
-:::
-
-. . .
-
-
-On the horizon:
-
-::: {.incremental}
-
- * More near-live condition signaling from _running_ parallel processes, e.g.
-   - **progressr** already uses it 
-   - Update **shiny** reactive elements (as things progress)
-   
  * Resource specifications, e.g.
    - avoid memory overuse, e.g. `memory=2*GiB`
    - distribute to proper machines, e.g. `memory=2*GiB` and `gpu`
  
- * ... and more
+:::
+
+
+### In the near future {.fragment}
+
+::: {.incremental}
+
+ * If you think **furrr** and **future.apply** are neat - just wait!
 
 :::
 
-:::
+::::
+
+. . .
+
 
 ## The future is bright!
 
@@ -529,14 +544,6 @@ On the horizon:
 
 ![](images/out.png){.absolute bottom=90 right=50 width="800"}
 
-
-## {data-background-color=#D0F0FF}
-
-<center style="font-size: 400%; padding-top: 2.5ex;">
-Thank you!
-<br>
-Questions?
-</center>
 
 
 ## Appendix: Setup
