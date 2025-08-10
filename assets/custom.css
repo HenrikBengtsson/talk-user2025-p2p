@@ -1,6 +1,7 @@
 #title-slide .author {
   font-size: 80px!important;
 }
+
 #title-slide .author:after {
   content: url('../images/monash-stacked-blue-rgb.png') ;
   display: block;
@@ -68,22 +69,23 @@
 }
 
 .reveal pre {
-    font-size: 0.75em;
-    font-weight: 500; /* 100=normal, 700=bold */
+    font-size: 0.9em;
+    font-weight: 600; /* 100=normal, 700=bold */
 }
 
 .reveal div.sourceCode {
     padding: 1px;
 }
 
-pre > code.sourceCode > span {
-    color: #eaeaea;
-}    
-
-.reveal pre.sourceCode code {
-    background-color: #080808;
-}
-
 .heightzzz {
     height: 35ex;
+}
+
+
+.reveal .slides section .fragment.blur {
+    filter: blur(5px);
+}
+
+.reveal .slides section .fragment.blur.visible {
+    filter: blur(5px);
 }

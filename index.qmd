@@ -52,6 +52,141 @@ execute:
 
 
 
+## Future ... what?
+
+:::: {.columns}
+
+::: {.column width="35%" font="150%" .fragment}
+An R assignment:
+```{r}
+#| code-line-numbers: false
+a <- 1 + 2
+```
+:::
+
+::: {.column width="10%"}
+:::
+
+::: {.column width="45%" font="150%" .fragment}
+A future-value assignment:
+```{r}
+#| code-line-numbers: false
+f <- future({ 1 + 2 })
+a <- value(f)
+```
+:::
+
+<br>
+
+::: {.column width="35%" font="150%" .fragment}
+```{r}
+#| code-line-numbers: false
+x <- 1:10
+b <- slow_sum(x)
+```
+:::
+
+::: {.column width="10%"}
+:::
+
+::: {.column width="45%" font="150%" .fragment}
+```{r}
+#| code-line-numbers: false
+x <- 1:10
+f <- future({ slow_sum(x) })
+b <- value(f)
+```
+:::
+
+::::
+
+
+## Future ... why? (bc enables parallel processing)
+
+:::: {.columns}
+
+::: {.column width="42%" font="135%" .fragment}
+Two calculations:
+```{r}
+#| code-line-numbers: "1-2|1-3|1-4|"
+x_a <- 1:10
+x_b <- 11:20
+a <- slow_sum(x_a) # 1 min
+b <- slow_sum(x_b) # 1 min
+c <- a + b
+```
+
+::: {.fragment}
+Total time: 2 mins
+:::
+
+:::
+
+
+
+::: {.column width="1%"}
+:::
+
+
+::: {.column width="57%" font="135%" .fragment}
+Two futures:
+```{r}
+#| code-line-numbers: "1-2|1-4|1-6|1-7|"
+x_a <- 1:10
+x_b <- 11:20
+f_a <- future( slow_sum(x) ) # ~0 sec
+f_b <- future( slow_sum(x) ) # ~0 sec
+
+a <- value(f_a)              # ~1 min
+b <- value(f_b)              
+c <- a + b
+```
+
+::: {.fragment}
+Total time: 1 mins
+:::
+
+:::
+
+::::
+
+. . .
+
+<br>
+
+### => futures are the core building block for parallel processing
+
+
+## Futureverse allows you to stick with your favorite coding style
+
+Parallel alternatives to traditional, sequential functions:
+
+```{r}
+#| code-line-numbers: "1|"
+ys <- lapply(xs, slow_sum)                    # base R
+ys <- future_lapply(xs, slow_sum)             # {future.apply}
+```
+<span style="height:10px"/>
+<br>
+
+. . .
+
+
+```{r}
+#| code-line-numbers: "1|"
+ys <- map(xs, slow_sum)                       # {purrr}
+ys <- future_map(xs, slow_sum)                # {furrr}
+```
+
+
+
+## {data-background-color=#D0F0FF}
+
+<center style="font-size: 400%; padding-top: 3.5ex;">
+Let's go back in time ...
+</center>
+
+
 ## Ten-Year Anniversary (future 0.6.0 released June 2015)
 
 <center>
@@ -99,8 +234,14 @@ _ggplot2 logo balloon wall: **Greg Swinehart** & **Hadley Wickham**_
 
 
 
+## {data-background-color=#D0F0FF}
 
-## Back to the Future: future.p2p - it's easy!
+<center style="font-size: 400%; padding-top: 3.5ex;">
+Back to the Future
+</center>
+
+
+## Long running pipelines and parallelization
 
 <br/>
 
@@ -109,7 +250,6 @@ You: _Argh, this takes foreeeeever_
 ```r
 y <- lapply(many_samples, fit_model)
 ```
-<div style="height: 0.5ex"></div>
 
 . . .
 
@@ -122,381 +262,60 @@ y <- future_lapply(many_samples, fit_model)
 ```
 <div style="height: 0.5ex"></div>
 
-. . .
+
+## future.p2p: sharing compute among friends - it's easy!
+
+<div style="height: 0.5ex"></div>
 
 Alice: _Don't worry - just join our compute cluster_
 
-```r
+::: {.column width="70%" font="150%"}
+```{r}
+#| code-line-numbers: false
 library(future.apply)
-plan(future.p2p::cluster, cluster = "alice/friends")
+plan(future.p2p::cluster, cluster="alice/friends")
 y <- future_lapply(many_samples, fit_model)
 ```
-
-. . .
-
-Questions?
-
-
-## Futureverse - A Friendly, Unifying Parallelization Framework in R
-
-
-![](images/future-logo.png){.absolute top=160 right=10 width=250}
-
-::: {.incremental}
-
-* Package **future** provides fundamental building blocks for
-  evaluating R code in parallel
-  
-  - `future()`, `value()`, and `resolved()`
-
-  - `%<-%` (future-assignment operator) on top of `future()` & `value()`
-
 :::
 
-. . .
-
-::: { .absolute top=360 width=80% }
-
-```{r eval = FALSE}
-#| code-line-numbers: "1|1-2|"
-> x <- 1:100
-> y <- slow_sum(x)            # ~1 min ... waiting!
-> y
-[1] 5050
-```
-
-:::
-
-. . .
-
-::: { .absolute bottom=300 }
-Total time: **1 minute**
-:::
+![](images/world-p2p-network-three-users.png){.absolute top=280 right=-10 width="550"}
 
 
 
-## Futureverse - A Friendly, Unifying Parallelization Framework in R
+## {data-background-color=#D0F0FF}
 
-![](images/future-logo.png){.absolute top=160 right=10 width=250}
-
-* Package **future** provides fundamental building blocks for
-  evaluating R code in parallel
-  
-  - `future()`, `value()`, and `resolved()`
-
-  - `%<-%` (future-assignment operator) on top of `future()` & `value()`
-
-::: { .absolute top=360 width=80% }
-
-```{r eval = FALSE}
-#| code-line-numbers: "1|1-2|1-3|1-4|"
-> x <- 1:100
-> a <- slow_sum(x[ 1:50 ])     # ~30 sec
-> b <- slow_sum(x[51:100])     # ~30 sec
-> y <- a + b
-> y
-[1] 5050
-```
-
-:::
-
-. . .
-
-::: { .absolute bottom=200 }
-Total time: **1 minute**
-:::
+<center style="font-size: 400%; padding-top: 2.5ex;">
+How to get started ...
+</center>
 
 
+## A P2P cluster has two components
 
+:::: {.fragment}
+::: {.column width="65%" font="100%"}
+<span style="font-size: 180%">Message Board</span>
 
-## Evaluate R expressions in the background
-
-::: { .absolute width=60% }
-
-```{r eval = FALSE}
-#| code-line-numbers: "1-3|1-5|1-6|1-10|"
-> library(future)
-> plan(multisession)           # parallelize on
-                               # local machine
-> x <- 1:100
-> a %<-% slow_sum(x[ 1:50 ])   # ~0 sec
-> b %<-% slow_sum(x[51:100])   # ~0 sec
-
-> 1 + 2
-[1] 3
-
-> y <- a + b                   # get results
-> y
-[1] 5050
-```
-
-:::
-
-. . .
-
-::: { .absolute bottom=200 }
-Total time: **30 seconds**
-:::
-
-![](images/burn.gif){.absolute top=80 right=10 width="600"}
-
-
-
-## Splitting up into more chunks to speed it up further
-
-::: { .absolute width=60% }
-
-```{r eval = FALSE}
-#| code-line-numbers: "1-8|"
-> library(future)
-> plan(multisession)
-
-> x <- 1:100
-> a %<-% slow_sum(x[ 1:25 ])   # ~0 sec
-> b %<-% slow_sum(x[26:50 ])   # ~0 sec
-> c %<-% slow_sum(x[51:75 ])   # ~0 sec
-> d %<-% slow_sum(x[76:100])   # ~0 sec
-
-> y <- a + b + c + d           # get results
-> y
-[1] 5050
-```
-
-:::
-
-. . .
-
-::: { .absolute bottom=220 }
-Total time: **15 seconds**
-:::
-
-![](images/formula_one_pitstop_724x412.gif){.absolute top=80 right=10 width="600"}
-
-
-
-## End-user can choose from many built-in parallel backends
-
+Used to announce futures and offers to do work
 <br>
+(centralized; lightweight - only metadata)
+:::
+::: {.column width="30%" font="100%"}
+![](images/message_board.png){width="350"}
+:::
+::::
 
-```{r}
-#| code-line-numbers: "1|2|3|5|6|"
-plan(sequential)
-plan(multisession)        # uses {parallel}'s "snow" machinery
-plan(multicore)           # uses {parallel}'s "multicore" machinery
+:::: {.fragment}
+::: {.column width="65%" font="100%"}
+<span style="font-size: 180%">P2P file-transfer protocol</span>
 
-plan(cluster, workers = c("n1", "n1", "n1", "n2", "n3"))
-plan(cluster, workers = c("n1", "m2.uni.edu", "vm.cloud.org"))
-```
-
-These are all based on the **parallel** package.
-
-
-
-## Higher-level parallelization from `future()` and `value()`
-
-<div style="margin-top: -56px;"></div>
-
-::::: { .columns }
-
-:::: {.column width="49%" .fragment fragment-index=1}
-
-<br style="margin-top: 0.9ex">
-![](images/juggler-1ball.gif){ width="13%" }
+Used to send futures to workers and receive results
 <br>
-<br style="margin-top: 3ex">
-
-```{r}
-y <- lapply(X, slow_sum)
-```
-
+(peer-to-peer; full-size data transfers)
+:::
+::: {.column width="30%" font="100%"}
+![](images/p2p-file-transfers.png){width="350"}
+:::
 ::::
-
-
-:::: {.column width="49%" .fragment fragment-index=2}
-
-![](images/juggler-4balls.gif)
-
-```{r}
-plan(multisession, workers = 4)
-y <- future_lapply(X, slow_sum)
-```
-
-::::
-
-:::::
-
-. . .
-
-::: {.absolute bottom=120 right=25}
-
-Easily implemented via `future()` and `value()`, e.g.
-
-```{r}
-future_lapply <- function(X, FUN, ...) {
-  fs <- lapply(X, function(x) future(FUN(x, ...)))
-  value(fs)
-}
-```
-
-:::
-
-
-
-## User-friendly, higher-level functions
-
-::: {.incremental}
-* The concept of "futures" was invented in 1975 (sic!)
-* `future()`, `value()`, and `resolved()` are easy to understand,
-  powerful constructs
-:::
-
-. . .
-
-These building blocks lay the foundation for higher-level functions:
-
- * **future.apply**, e.g. `future_lapply()` and `future_replicate()`
- * **furrr**, e.g. `future_map()` and `future_map_dbl()`
- * **doFuture**, e.g. `foreach() %dofuture% { ... }`
- * ...
- * _\- Maybe your package will be next?_
-
-![](images/purrr-logo.png){.absolute top=372 right=82 width=150}
-![](images/furrr-logo.png){.absolute top=500 right=10 width=150}
-
-
-
-## Futureverse allows you to stick with your favorite coding style
-
-Parallel alternatives to traditional, sequential functions:
-
-```{r}
-#| code-line-numbers: "1|"
-y <- lapply(x, some_fcn)                    ## base R
-y <- future_lapply(x, some_fcn)             ## {future.apply}
-```
-<span style="height:10px"/>
-
-. . .
-
-
-```{r}
-#| code-line-numbers: "1|"
-y <- map(x, some_fcn)                       ## {purrr}
-y <- future_map(x, some_fcn)                ## {furrr}
-```
-<span style="height:10px"/>
-
-. . .
-
-
-```{r}
-#| code-line-numbers: "1|"
-y <- foreach(z = x) %do% some_fcn(x)        ## {foreach}
-y <- foreach(z = x) %dofuture% some_fcn(z)  ## {foreach} + {doFuture}
-```
-
-. . .
-
-
-Yes, we can of course use base-R or **magrittr** pipes where we want to, e.g.
-
-```{r}
-y <- x |> future_map(some_fcn)
-```
-
-```{r}
-y <- x %>% future_map(some_fcn)
-```
-
-
-
-## Anyone can develop additional parallel backends
-
-From the very beginning in 2015, the plan and hope has been that
-additional R backends would become available in the future (pun
-intended!)
-
-. . .
-
-The **future.callr** package wraps the **callr** package that is an
-alternative to the built-in **parallel**-based `multisession` backend:
-
-```{r}
-plan(future.callr::callr)                     # locally using callr
-```
-
-
-The **future.mirai** package wraps the **mirai** package that is an
-alternative to the built-in **parallel**-based `multisession` backend:
-
-```{r}
-plan(future.mirai::mirai_multisession)        # locally using mirai
-```
-
-. . .
-
-The **future.batchtools** package wraps the **batchtools** package
-that can run tasks on high-performance compute (HPC) clusters, e.g.
-
-```{r}
-plan(future.batchtools::batchtools_slurm)     # on a Slurm job scheduler
-plan(future.batchtools::batchtools_sge)       # on a SGE job scheduler
-```
-
-
-
-## future.p2p - A peer-to-peer parallel cluster
-
-![](images/future-logo.png){.absolute top=125 left=1200 width="250"}
-
-* Share compute resources among friends
-
-* Easy!
-
-* Existing Futureverse code can use it without modification
-
-. . .
-
-::: { .absolute width=66% }
-
-```{r}
-#| code-line-numbers: "1|1-3|1-7|1-9|1-11|"
-library(future)
-plan(future.p2p::cluster, cluster = "alice/p2p")
-
-x <- rnorm(100)
-a %<-% sum(x[ 1:50 ])
-b %<-% sum(x[51:100])
-y <- a + b
-
-z <- future.apply::future_sapply(x, slow)
-
-z <- x |> furrr::future_map_dbl(slow)
-
-z <- foreach::foreach(.x = x) %dofuture% { slow(.x) }
-```
-
-:::
-
-
-## Futureverse is very well tested thanks to lots of real-world use
-
-:::: {.columns}
-
-::: {.column width="49%"}
-
-![**~460 CRAN packages** depend directly on the **future** package - it grows 3× faster than **foreach** at 1200 reverse dependencies](images/revdep_over_time_on_CRAN.png)
-
-:::
-
-::: {.column width="49%" .fragment fragment-index=2}
-
-![The **future** packages is among **the 0.7% most downloaded** CRAN packages](images/downloads_over_time_on_CRAN.png)
-
-:::
-
-::::
-
 
 
 ## Contributing your compute power is easy!
@@ -574,8 +393,39 @@ or directly from the command line:
 
 
 
+## Stay tuned for exiting announcements
 
-## There is a promising future for parallelization in R
+Near future:
+
+::: {.incremental}
+
+ * Custom random number generators (RNG) [together with Ralf Stubner]
+ * If you think **furrr** and **future.apply** are neat - just wait!
+
+:::
+
+. . .
+
+
+On the horizon:
+
+::: {.incremental}
+
+ * More near-live condition signaling from _running_ parallel processes, e.g.
+   - **progressr** already uses it 
+   - Update **shiny** reactive elements (as things progress)
+   
+ * Resource specifications, e.g.
+   - avoid memory overuse, e.g. `memory=2*GiB`
+   - distribute to proper machines, e.g. `memory=2*GiB` and `gpu`
+ 
+ * ... and more
+
+:::
+
+:::
+
+## The future is bright!
 
 * It’s easy to get started - just try it
 * Support: <https://github.com/HenrikBengtsson/future/discussions>
@@ -584,8 +434,16 @@ or directly from the command line:
 * More features on the roadmap
 * I love feedback and ideas
 
-![](images/the-future-is-here.jpg){.absolute bottom=90 right=50 width="800"}
+![](images/out.png){.absolute bottom=90 right=50 width="800"}
 
+
+## {data-background-color=#D0F0FF}
+
+<center style="font-size: 400%; padding-top: 2.5ex;">
+Thank you!
+<br>
+Questions?
+</center>
 
 
 ## Appendix: Setup
@@ -593,5 +451,3 @@ or directly from the command line:
 * You need a pico.sh account, just `ssh pico.sh` once
 
 * Share your pico username with your friends
-
-* Install `wormhole` (for P2P file sharing)
