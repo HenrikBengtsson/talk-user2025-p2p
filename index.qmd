@@ -346,7 +346,7 @@ Alice sets up P2P cluster and gives 'bob' and 'carol' access:
 
 ```{r}
 #| code-line-numbers: false
-[alice]> future.p2p::cluster("alice/friends", users=c("bob", "carol"))
+[alice]> future.p2p::host_cluster("alice/friends", users=c("bob", "carol"))
 ```
 
 This is basically setting up a shared message board.
@@ -408,7 +408,7 @@ Setting up a P2P cluster:
 
 ```{r}
 #| code-line-numbers: false
-{alice}$ Rscript -e future.p2p::cluster --cluster=alice/friends \
+{alice}$ Rscript -e future.p2p::host_cluster --cluster=alice/friends \
          --users=bob,carol
 ```
 
