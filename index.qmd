@@ -43,7 +43,7 @@ R Foundation, R Consortium<br>
 {{< bi github >}} {{< bi mastodon >}} {{< bi bluesky >}} \@HenrikBengtsson<br>
 
 ![](images/future-logo.png){.absolute top=20 right=40 width="250"}
-![](images/world-p2p-network-three-users.png){.absolute top=380 right=-20 width="350"}
+![](images/world-p2p-network-three-users.png){.absolute top=380 right=-10 width="350"}
 
 <br/>
 
@@ -539,6 +539,6 @@ The Future is bright<br>
 * Tutorials: <https://www.futureverse.org/tutorials.html>
 * Blog posts: <https://www.futureverse.org/blog.html>
 * More features on the roadmap
-* I love feedback and ideas
+* I love feedback, ideas, and bug reports 💜
 
 ![](images/futurize-v1.png){.absolute bottom=70 right=50 width="600"}
