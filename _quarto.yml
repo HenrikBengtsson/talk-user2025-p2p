@@ -1,13 +1,13 @@
 project:
-  title: "Futureverse P2P"
-
+  title: "Futureverse P2P: Peer-to-Peer Parallelization in R"
+  
 format:
   revealjs:
     chalkboard: 
       buttons: false
     preview-links: auto
     logo: images/future-logo.png
-    footer: <https://www.futureverse.org>
+    footer: <https://future.p2p.futureverse.org>
     slide-number: true
     margin: 0.05
     pointer:

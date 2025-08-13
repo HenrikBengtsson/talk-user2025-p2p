@@ -32,20 +32,18 @@ execute:
 
 <h1>Futureverse P2P:<br>Peer-to-Peer Parallelization in R</h1>
 
-<h2><em>- Share compute among friends across the world</em></h2>
+<h2>_- Share compute among friends across the world_</h2>
 
-<hr/>
 <br/>
 
 ### Henrik Bengtsson
 
-#### University of California, San Francisco
-#### R Foundation, R Consortium
-
+University of California, San Francisco<br>
+R Foundation, R Consortium<br>
 {{< bi github >}} {{< bi mastodon >}} {{< bi bluesky >}} \@HenrikBengtsson<br>
 
-![](images/future-logo.png){.absolute top=20 right=20 width="250"}
-![](images/world-p2p-network-three-users.png){.absolute top=380 right=-40 width="350"}
+![](images/future-logo.png){.absolute top=20 right=40 width="250"}
+![](images/world-p2p-network-three-users.png){.absolute top=380 right=-20 width="350"}
 
 <br/>
 
@@ -261,7 +259,7 @@ Back to the present
 #| code-line-numbers: false
 library(future.apply)
 
-plan(future.p2p::cluster, cluster="alice/friends")
+plan(future.p2p::cluster, cluster = "alice/friends")
 
 y <- future_lapply(xs, slow_sum)
 ```
@@ -472,14 +470,12 @@ Pros and cons
 
 ## P2P computing requires mutual trust
 
-<br>
+What if?
 
 ```{r}
 #| code-line-numbers: false
-f <- future(system("erase harddrive"))`
+f <- future(system("erase harddrive"))
 ```
-
-<br>
 
 . . .
 
