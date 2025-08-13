@@ -1,6 +1,6 @@
 install-extensions:
 	quarto add quarto-ext/pointer
-	quarto install extension HenrikBengtsson/bsicons
+	quarto install extension shafayetShafee/bsicons
 
 meta: heading-meta.html
 
