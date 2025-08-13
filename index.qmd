@@ -45,6 +45,7 @@ execute:
 {{< bi github >}} {{< bi mastodon >}} {{< bi bluesky >}} \@HenrikBengtsson<br>
 
 ![](images/future-logo.png){.absolute top=20 right=20 width="250"}
+![](images/world-p2p-network-three-users.png){.absolute top=380 right=-40 width="350"}
 
 <br/>
 
