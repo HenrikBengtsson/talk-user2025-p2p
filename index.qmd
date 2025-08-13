@@ -471,7 +471,7 @@ Pros and cons
 
 
 
-## P2P computing requires mutual trust
+## ⚠️ P2P computing requires mutual trust ⚠️
 
 What if?
 
