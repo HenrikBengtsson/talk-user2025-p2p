@@ -1,7 +1,6 @@
 metathis::meta() |> 
   metathis::meta_social(
     title = "Futureverse P2P: Peer-to-Peer Parallelization in R",
-    subtitle = "Share compute among friends across the world",
     description = "An 18-minute talk on Futureverse P2P",
     url = "https://henrikbengtsson.github.io/talk-user2025-p2p/#/",
     image = "https://raw.githubusercontent.com/HenrikBengtsson/talk-user2025-p2p/main/images/index-img.png",
