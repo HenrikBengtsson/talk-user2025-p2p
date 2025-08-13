@@ -4,7 +4,7 @@ format:
     slide-number: true
     logo: images/future-logo.png
     footer: <https://future.p2p.futureverse.org>
-    HIDE_include-in-header: heading-meta.html
+    include-in-header: heading-meta.html
     code-copy: true
     center-title-slide: false
     code-link: true
@@ -42,8 +42,8 @@ University of California, San Francisco<br>
 R Foundation, R Consortium<br>
 {{< bi github >}} {{< bi mastodon >}} {{< bi bluesky >}} \@HenrikBengtsson<br>
 
-![](images/future-logo.png){.absolute top=20 right=40 width="250"}
-![](images/world-p2p-network-three-users.png){.absolute top=380 right=-10 width="350"}
+![](images/future-logo.png){fig-alt="The hexlogo of the future package. A left-facing arrow with the text future underneath - both in bold style filled with yellow-to-orange vertical gradient. The background is dark blue with teeny star-shaped symbols in distance resembling looking deep out in the universe. The hexlogo is surrounded by a light-blue border." .absolute top=20 right=40 width="250"}
+![](images/world-p2p-network-three-users.png){fig-alt="Illustration of three people working on laptops, positioned below a large globe with location markers connected by lines, representing global online collaboration." .absolute top=380 right=-10 width="350"}
 
 <br/>
 
@@ -199,7 +199,7 @@ Let's go back in time ...
 ## Ten-Year Anniversary (future 0.6.0 released June 2015)
 
 <center>
-![](images/future-logo-balloons.png){width="40%"}
+![](images/future-logo-balloons.png){fig-alt="Hexagon-shaped sign with the word 'FUTURE' in bold orange letters and the URL futureverse.org below, surrounded by a background of blue balloons." width="40%"}
 
 <small>
 _future logo: **Dan LaBar**_, 
@@ -211,34 +211,37 @@ _ggplot2 logo balloon wall: **Greg Swinehart** & **Hadley Wickham**_
 ## useR! 2016 at Stanford, CA, USA
 
 <center>
-<img src="images/useR2016-slide-01.png" style="width: 60%; border: 2px solid black; padding: 10px; box-shadow: 5px 10px gray;">
+<img src="images/useR2016-slide-01.png" style="width: 60%; border: 2px solid black; padding: 10px; box-shadow: 5px 10px gray;" alt="Screenshot of presentation slide titled 'A Future for R' by Henrik Bengtsson, UC San Francisco, with a retro illustration of a futuristic flying car on a highway. Caption at the bottom reads 'useR 2016, Stanford, CA, 2016-06-28'.">
 </center>
 
 ## useR! 2016 at Stanford, CA, USA
 
 <center>
-<img src="images/useR2016-slide-05.png" style="width: 60%; border: 2px solid black; padding: 10px; box-shadow: 5px 10px gray;">
+<img src="images/useR2016-slide-05.png" style="width: 60%; border: 2px solid black; padding: 10px; box-shadow: 5px 10px gray;" alt="Screenshot of presentation slide titled 'R package: future' listing features: simple unified API, works on all platforms, easy to install, lightweight (~300 kB incl. dependencies), vignettes, and extendable by anyone. Badges at the bottom show CRAN 1.0.0, build passing, and Codecov 97%. Slide number 5 of 18.">
 </center>
+
 
 
 ## useR! 2016 at Stanford, CA, USA
 
 <center>
-<img src="images/useR2016-slide-07.png" style="width: 60%; border: 2px solid black; padding: 10px; box-shadow: 5px 10px gray;">
+<img src="images/useR2016-slide-07.png" style="width: 60%; border: 2px solid black; padding: 10px; box-shadow: 5px 10px gray;" alt="Screenshot of presentation slide titled 'Consistent futures everywhere' listing Unix, macOS, and Windows. Shows R code using the future package to set plan(multiprocess) highlighted and run a Mandelbrot demo. Output indicates completion of several regions. On the right, an R graphics window displays a colorful Mandelbrot fractal.">
 </center>
+
 
 
 ## useR! 2016 at Stanford, CA, USA
 
 <center>
-<img src="images/useR2016-slide-12.png" style="width: 60%; border: 2px solid black; padding: 10px; box-shadow: 5px 10px gray;">
+<img src="images/useR2016-slide-12.png" style="width: 60%; border: 2px solid black; padding: 10px; box-shadow: 5px 10px gray;" alt="Screenshot of presentation slide titled 'future.BatchJobs: Futures for HPC' showing a table mapping future.BatchJobs backends to job schedulers, such as batchjobs_slurm for Slurm and batchjobs_sge for Sun Grid Engine. Includes R code loading future.BatchJobs, setting plan(batchjobs_slurm) highlighted, and running DNA sequence alignment in parallel. Badges show CRAN 0.12.1, build passing, and Codecov 90%. Slide number 12 of 18.">
 </center>
+
 
 
 ## useR! 2016 at Stanford, CA, USA
 
 <center>
-<img src="images/useR2016-slide-27.png" style="width: 60%; border: 2px solid black; padding: 10px; box-shadow: 5px 10px gray;">
+<img src="images/useR2016-slide-27.png" style="width: 60%; border: 2px solid black; padding: 10px; box-shadow: 5px 10px gray;" alt="Presentation slide titled 'A7. Futures I'd like to see' listing three ideas: plan(r32) for 32-bit R support, plan(p2p) for private and/or community-based peer-to-peer computer clusters, and plan(rhelp) to post R scripts to R-help for results. The text 'plan(p2p)' and its description are highlighted in orange.">
 </center>
 
 
@@ -265,7 +268,7 @@ y <- future_lapply(xs, slow_sum)
 ```
 :::
 
-![](images/world-p2p-network-three-users.png){.absolute top=280 right=-10 width="550"}
+![](images/world-p2p-network-three-users.png){fig-alt="Illustration of three people working on laptops, positioned below a large globe with location markers connected by lines, representing global online collaboration." .absolute top=280 right=-10 width="550"}
 
 
 
@@ -289,7 +292,7 @@ Used to announce futures and offers to do work
 :::
 
 ::: {.column width="30%" font="100%"}
-![](images/message_board.png){width="350"}
+![](images/message_board.png){fig-alt="Illustration of a bulletin board labeled 'Message Board' with six pinned notes, alternating between 'REQUEST' and 'OFFER' in yellow and blue squares." width="350"}
 :::
 
 ::::
@@ -305,7 +308,7 @@ Used to send futures to workers and receive results
 :::
 
 ::: {.column width="30%" font="100%"}
-![](images/p2p-file-transfers.png){width="350"}
+![](images/p2p-file-transfers.png){fig-alt="Diagram of three laptops connected in a triangular network, with arrows indicating file transfer between each pair." width="350"}
 :::
 
 ::::
@@ -322,7 +325,7 @@ access the message board:
 
 ### 1. `ssh-keygen`
 
-![](images/ssh-keygen-carol.png){width="770"}
+![](images/ssh-keygen-carol.png){fig-alt="Terminal screenshot showing ssh-keygen generating a new ed25519 SSH key pair for user carol, including prompts for file location and passphrase, and displaying the key fingerprint and randomart image." width="770"}
 
 :::
 
@@ -330,7 +333,7 @@ access the message board:
 
 ### 2. `ssh pico.sh` => pick a username
 
-![](images/pico.sh-signup-carol.png){width="770"}
+![](images/pico.sh-signup-carol.png){fig-alt="Terminal interface for pico.sh signup, showing welcome message, account creation instructions, a getting started link, the user's SSH public key fingerprint, and an input field with the username 'carol' entered." width="770"}
 
 :::
 
@@ -541,4 +544,4 @@ The Future is bright<br>
 * More features on the roadmap
 * I love feedback, ideas, and bug reports 💜
 
-![](images/futurize-v1.png){.absolute bottom=70 right=50 width="600"}
+![](images/futurize-v1.png){fig-alt="Hexagon-shaped logo with a light blue border, dark blue starry background, and the word 'FUTURIZE' in bold orange gradient letters beneath an upward-pointing arrow symbol." .absolute bottom=70 right=50 width="600"}
