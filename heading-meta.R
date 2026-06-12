@@ -1,4 +1,4 @@
-metathis::meta() |> 
+metathis::meta() |>
   metathis::meta_social(
     title = "Futureverse P2P: Peer-to-Peer Parallelization in R",
     description = "An 18-minute talk titled 'Futureverse P2P: Peer-to-Peer Parallelization in R - Share compute among friends across the world",
